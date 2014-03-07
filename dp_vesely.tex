@@ -13,6 +13,7 @@
 \usepackage{graphicx} %graphics files inclusion
 % \usepackage{amsmath} %advanced maths
 % \usepackage{amssymb} %additional math symbols
+\usepackage{wrapfig}
 
 \usepackage{dirtree} %directory tree visualisation
 
@@ -72,10 +73,80 @@ Zmínit že práce nikterak nesrovnává klasické a BigData databáze naopak se
 
 \input{chapter4.tex}
 
+V předchozí kapitole jsme se seznámili s technickými principy a postupy, které se uplatňujív BigData konceptu. V tét kapitole se budu zabývat jedním z hlavních témat práce a tou je open source řešení pro platformu BigData od organizace Apache Foundations, také známý jako Apache Big Data stack. Tento stack se skládá z několika aplikací, které až na jednu výjimku na sobě nejsou nikterak závislé. V záběru této kapitoly se budu důkladně věnovat pro nás nejdůležitější části tohoto stacku a tím je NoSQL databázový systém Cassandra.
+
+\section{Hadoop}
+
+
+
+
+Hadoop je softwarová knihovna napsaná v programovacím jazyce Java a umožňuje distribuované zpracování velkého množství dat napříč clusterem pomocí jednoduchých programovacíh modelů- Je navržený aby dobře škáloval cluster tvořící jeden až několik tisíc počítačů, kde každý nabízí lokální výpočetní výkon a úložiště dat. Hadoop řeší problémy s hardwarem na aplikační vrstvě a tudíž je možné navrhovat vysoce dostupné služby na clusterů počítačů, aniž bychom se museli strachovat výpadků. Jeho 4 komponenty tvoří nejpodstatnější část pro celou analytickou práci s  daty. A všechny ostatní aplikace přímo, čí nepřímo některé části Hadoopu používají nebo jsou na nich dokonce založeny. Jaké tedy jsou tyto 4 komponenty hadoopu ?
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.15]{images/hadoop}
+\caption{Logo Apache hadoop}
+\label{fig:yarn}
+
+\end{figure}
+
+
+\subsection{Hadoop Commons}
+Jedná se pouze o základní sadu nástrojů podporujícíc a propojující ostatní moduly Hadoopu.
+
+
+\subsection{Hadoop File System (HDFS)}
+Jedná se o open source distribuovaný filesystém, jehož některé prvky vychází z dříve zmíněného GFS. HDFS umožňuje uložit velké množství dat mezi jednotlivé uzly.  HDFS umožňuje velice dobré škálování s rostoucím objemem dat. Ostatní technologie z Apache Big Data Stacku filesystém využívají ke sběru a ukládání výsledků jejich analytických procesů. HDFS cluster se skládá primárně z NameNode, který řídí filesystemová metadata a z DataNodů, které data uchovávají. 
+
+\subsection{Hadoop MapReduce}
+MapReduce jsme zmínili výše a jen zopakuji, že se jedná o programovací paradigma a framework na paralelní zpracování dat. Nabízí API, díky kterému můžeme jednoduše programovat naše vlastní MapReduce operace. Tento framework nabízí základní kostru, kterou programátor doplní a o vše ostatní se stará samotná knihovna. Přesto všakveškerá logika programu zavisí na programátorovi. 
+
+\subsection{Hadoop YARN}
+Tento modul se stará o plánování jednotlivých MapReduce programů a o správu dostupných zdrojů v celém clusteru a rozhoduje jaká data se kam budou posílat a počítat. Základní Architektura YARNu má za myšlenku mít jeden globální uzel, který se nazývá \uv{Resource Manager} a Pro každý běh aplikace mít tzv. \uv{Application Master}, který má na starosti komunikaci s \uv{Node Managery} a dohlížením nad spouštěním jednotlivých Tasků. Resource Manager se skládá ze 2 hlavních komponent Plánovače a Aplikačního manažera. Plánovač je zodpovědný za alokování zdrojů pro různé běžící aplikace. Aplikační manažer je zodpovědný za příjem nových MapReduce programů a jejich správné zařazení. NodeManager je agent běžící na každém stroji, která je zodpovědný za aplikační kontejnery a monitoruje stav dostupných prostředků stroje a ohlašuje se Resource Manageru, který tak má potřebné informace k přerozdělování nových úkolů.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.7]{images/yarn_architecture}
+\caption{Architektura Hadoop YARN}
+\label{fig:yarn}
+
+\end{figure}
+
+
+
+\newpage 
+
+\section{HBase}
+Je NoSQL databázový systém, který je založený na principu Google BigTable. Jedná se o druhou nejpoužívanšjí NoSQL databázi v Apache Big Data Stacku. Implementačně je zavíslá na HDFS, který používá k ukládání dat. Výhodou je velice jednoduhá a rychlá integrace s Hadoop MapReduce. HBase sdědil po Hadoopu i jeho Master-Slave architekturu.
+
+
+\section{Hive}
+
+
+Apache Hive je data warehouse infrastruktura postavená na vrchu Hadoopu na poskytování analýzy a dotazování se nad daty. Původně byl tento software vyvinut ve společnosti Facebook. A nyní se jeho starají společnost jako je NetFlix a Amazon. Hive podporuje anaýzu velkých datasetů uložených v HDFS nebo HDFS-kompatibilních systémech jako například (CassandraFS nebo Amazon S3). Syntaxe jeho dotazovacího jazyka HiveQL je velice podobná SQL a proto ho mohou inženýři ovládající tento jazyk velice brzy ovládnout.HiveQL nabízí programátorům prostředky, které nejsou běžně v NoSQL databázích dostupné jako například funkce JOIN. 
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \centering
+    \includegraphics[scale=0.5]{images/hive_logo}
+\caption{Logo Apache Hive}
+
+\end{wrapfigure}
+
+Hive funguje na principu, že si dotaz přeloží a převede do kodu kompatibilního s Hadoop Mapreduce a výsledný program následně spustí na Hadoop clusteru. Obrovskou výhodou je, že programátor dostává v podstatě s nulovým snažením hotový MapReduce program, který by jinak musel zdlouhavě psát, což umožnuje být vysoce efektivní. Hive si standardně ukládá metadata do embedované databáze Derby. Podporuje pokročilejší funkce jako například Indexy, kompresi nebo uživatelem definované funkce (UDF) samozřejmostí jsou standardní matematické a řetězcové funkce aplikovatelné v HiveQL dotazech. 
+
+
+
+\section{Pig}
+\section{SolR}
+\section{Squoop}
+\section{Mahout}
+\section{Cassandra}
 
 \chapter{Vhodné případy užití}
 \section{Analýza Access logů}
 \section{Image Servery}
+\section{Sběr a vyhodnocení transakčních událostí}
 
 
 \chapter{Implementace některých případu užití}
