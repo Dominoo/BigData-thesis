@@ -66,14 +66,13 @@
 % ODTUD DAL VSE ZMENTE
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
-\department{Katedra \ldots (Softwarového inženýrství)}
-\title{
-}
+\department{Katedra Softwarového inženýrství}
+\title{Distribuované ukládání a zpracování velkého množství dat - případové studie}
 \authorGN{Dominik} %(křestní) jméno (jména) autora
 \authorFN{Veselý} %příjmení autora
 \authorWithDegrees{Bc. Dominik Veselý} %jméno autora včetně současných akademických titulů
-\supervisor{Ing. Michal Valenta, PhD}
-\acknowledgements{Chtěl bych poděkovat vedoucímu práce za podnětné, připomínky při tvorbě této práce. Dále bych chtěl poděkovat rodičům za podporu po celou dobu studia.}
+\supervisor{Ing. Michal Valenta, PhD}	
+\acknowledgements{Chtěl bych poděkovat vedoucímu práce za podnětné, připomínky při tvorbě této práce za příležitost, si toto téma zvolit. Dále bych chtěl poděkovat rodičům za podporu po celou dobu studia. Nakonec bych poděkoval kolegovi Bc. Štěpánovi Hellerovi za finální korekturu mého textu.}
 \abstractCS{Tato práce shrnuje a definuje celý koncept BigData a jeho historii. Zabývá se také popisem technik, které jsou s tímto konceptem svázány, včetně vývoje pohledu na CAP theorém, který je nejznámějším theorémem spojeným s moderními distribuovanými systémy. V další části se práce zaměřuje na popis opensource technologií a to zejména Apache BigData platform. Největší důraz je kladen na NoSQL databázi Cassandru, která je v této práci stěžejní. Poslední část se zabývá reálnými případy užití Cassandry a přidružených technologií v praxi a popisem tvorby některých vybraných případů, které poslouží v rámci výuky v nově připravovaném předmětu. }
 \abstractEN{This thesis sums up the whole concept of BigData and its history. It also describes techniques tightly related with this concept including evolution of how engineers look on CAP theorem which happens to be one of the biggest rules in modern distributed computing. In the next part thesis focus on opensource software from Apache BigData platform. It looks under the hood of NoSQL database Cassandra which is primary software for this thesis. Last part describes real use cases of Cassandra and related technologies in real world examples and description creation of certain use cases whose will be used in newly prepared course. }
 \placeForDeclarationOfAuthenticity{V~Praze}
@@ -167,6 +166,55 @@ Poslední demonstrovaný příklad ukáže použití vyhledávácího systému S
 	\item[SQL] Structured query language
 	\item[NoSQL] Not only SQL
 \end{description}
+
+\chapter{Scripty použité pro generování dat}
+\lstset{language=Ruby}          % Set your language (you can change the language for each code-block optionally)
+\begin{lstlisting}[caption={Generování přístupů z Access Logů},label=CQL3]
+#!/usr/bin/ruby
+users = ["dominik","pepa","kamil","martin","honza","tomas"]
+sites = ["www.facebook.com", ...]
+file = File.open("cassandra-100000.cql","w");
+severity = ["OK","WARNING","DENIED"]
+
+count = 100000
+count.times do
+  
+  date = Time.at(rand * Time.now.to_i).to_i
+  user = users.sample
+  site = sites.sample
+  
+  sevrand = rand(100)
+  if sevrand < 100 and sevrand > 90
+    sev = severity[2]
+  elsif sevrand < 90 and sevrand > 70
+    sev = severity[1]
+  else
+    sev = severity[0]
+  end
+  
+  query = "INSERT INTO accesslog_ks.logs(user,date,webpage,severity) VALUES ('#{user}','#{date}','#{site}','#{sev}');";
+  file.puts query   
+end
+\end{lstlisting}
+\pagebreak
+\begin{lstlisting}[caption={Generování transakčních událostí},label=CQL3]
+#!/usr/bin/ruby
+users = ["dominik","pepa","kamil","martin","honza","tomas","tereza"]
+file = File.open("items.cql","w");
+
+users.each do | user |
+  count = rand(100)
+  count.times do
+    item = rand(100)
+    date = Time.at(rand * Time.now.to_i).to_i
+    query = "INSERT INTO accesslog_ks.itemstracking(item,user,timestamp) VALUES ('item-#{item}','#{user}','#{date}');";
+    file.puts query       
+    query = "INSERT INTO accesslog_ks.userstracking(item,user,timestamp) VALUES ('item-#{item}','#{user}','#{date}');";
+    file.puts query    
+  
+  end
+end 
+\end{lstlisting}
 
 \chapter{Obsah přiloženého CD}
 
