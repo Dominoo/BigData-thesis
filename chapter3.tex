@@ -63,13 +63,13 @@ Toto je nejzajímavější možnost a pro tuto práci je stěžejní. Existují 
 \end{itemize}
 \section{Distribuovaný file systém}
 
-V předchozích sekcích jsme rozebrali distribuované systémy a jejich omezení. Zmínili jsme také nutnost sdílet velké množství dat napříč několika počítači, které mohou být umístěny napříč různými datacentry. Potřebu mít distribuovaný filesystém měl i jeden z největších technologických gigantů – firma Google. V roce 2004 se Google rozhodl o jejich řešení podělit a vydal detailní článek \cite{gfs} popisující kompletní funkčnost a detaily celé infrastruktury. Vysvětlení funkčnosti a architektury je nad rámec této práce a navíc je vše dobře popsané v článku samotném, důležité je však zmínit, že tento systém se stal inspirací a nastolil trend v tom, jak podobné systémy dnes vypadají a jaké mají vlastnosti. Na základě tohoto článku vznikl například opensource klon MooseFS.
+V předchozích sekcích jsme rozebrali distribuované systémy a jejich omezení. Zmínili jsme také nutnost sdílet velké množství dat napříč několika počítači, které mohou být umístěny napříč různými datacentry. Potřebu mít distribuovaný filesystém měl i jeden z největších technologických gigantů – firma Google. V roce 2004 se Google rozhodl o jejich řešení podělit a vydal detailní článek \cite{gfs} popisující kompletní funkčnost a detaily celé infrastruktury. Vysvětlení funkčnosti a architektury je nad rámec této práce a navíc je vše dobře popsané v článku samotném, důležité je však zmínit, že tento systém se stal inspirací a nastolil trend v tom, jak podobné systémy dnes vypadají a jaké mají vlastnosti. Na základě tohoto článku vznikl například opensource klon MooseFS. Na obrázku \ref{fig:gfs} je zobrazeno schéma GFS včetně jednotlivvých komponent a datových toků mezi nimi. 
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{images/gfs}
 \caption{Architektura Google File System \cite{gfs}}
-\label{fig:3v}
+\label{fig:gfs}
 \end{figure}
 
 \section{BigTable}
@@ -78,7 +78,7 @@ Jedná se o systém na uchovávání dat společnosti Google, který je postaven
 \section{MapReduce}
 Je programovací model a framework prvně představený společností Google \cite{mapreduce} na zpracování velkého datasetu. Uživatel specifikuje mapovací funkci, která zpracuje páry (klíč, hodnota) a vygeneruje přechodné páry (klíč, hodnota), které jsou pak předané redukční funkci, která sloučí všechny mezi-hodnoty se stejným mezi-klíčem. Mnoho příkladů z reálného světa lze převést do tohoto paradigmatu. Výhodou těchto funkcionálně napsaných programů je, že jsou automaticky dobře paralelizovatelné. Systém se stará o detaily distribuce dat a rozhození jednotlivých úloh na jednotlivé počítače a obsluhuje chyby a neočekávané stavy. Díky tomu umožňuje i programátorům s velmi malou znalostí paralelního programování napsat vysoce paralelní a efektivní programy. 
 
-Toto paradigma se stalo nejdůležitějším stavebním kamenem pro zpracovávání BigData. Díky tomuto mechanismu jsme schopni zpracovávat terabyty dat rychle a efektivně a vypočítaný výsledek znovu uložit do databáze. Veškeré postupy zpracování BigData jsou přímo či nepřímo založené na MapReduce. 
+Toto paradigma se stalo nejdůležitějším stavebním kamenem pro zpracovávání BigData. Díky tomuto mechanismu jsme schopni zpracovávat terabyty dat rychle a efektivně a vypočítaný výsledek znovu uložit do databáze. Veškeré postupy zpracování BigData jsou přímo či nepřímo založené na MapReduce. Na obrázku \ref{fig:mapreduce} je tento mechanismus zobrazen, nejdříve jak vypadá mapovací a následně redukovací fáze, ze které vznikne konečný výsledek.
 
 \begin{figure}[!h]
 \includegraphics[scale=0.6]{images/mapreduce}
