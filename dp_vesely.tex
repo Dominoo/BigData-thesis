@@ -73,8 +73,8 @@
 \authorFN{Veselý} %příjmení autora
 \authorWithDegrees{Bc. Dominik Veselý} %jméno autora včetně současných akademických titulů
 \supervisor{Ing. Michal Valenta, PhD}
-\acknowledgements{Chtěl bych poděkovat vedoucímu práce za podnětné, připomínky při tvorbě této práce. Dále bych chtěl poděkovat rodičům za podporu po celou dobu studia.}
-\abstractCS{Tato práce shrnuje a definuje celý koncept BigData a jeho historii. Zabývá se také popisem technik, které jsou s tímto konceptem svázány, včetně vývoje pohledu na CAP theorém, který je nejznámějším theorémem spojeným s moderními distribuovanými systémy. V další části se práce zaměřuje na popis opensource technologií a to zejména Apache BigData platform. Největší důraz je kladen na NoSQL databázi Cassandru, která je v této práci stěžejní. Poslední část se zabývá reálnými případy užití Cassandry a přidružených technologií v praxi a popisem tvorby některých vybraných případů, které poslouží v rámci výuky v nově připravovaném předmětu. }
+\acknowledgements{Chtěl bych poděkovat vedoucímu práce za podnětné připomínky při její tvorbě. Dále bych chtěl poděkovat rodičům za podporu po celou dobu studia.}
+\abstractCS{Tato práce shrnuje a definuje celý koncept BigData a rovněž se věnuje jeho historii. Zabývá se také popisem technik, které jsou s tímto konceptem svázány, včetně vývoje pohledu na CAP teorém, který je nejznámějším teorémem spojeným s moderními distribuovanými systémy. V další části se práce zaměřuje na popis opensource technologií a to zejména Apache BigData Platform. Největší důraz je kladen na NoSQL databázi Cassandra, která je pro tuto práci stěžejní. Poslední část se zabývá reálnými případy užití Cassandry a přidružených technologií v praxi a také popisem tvorby některých vybraných případů, které poslouží v rámci výuky v nově připravovaném předmětu. }
 \abstractEN{This thesis sums up the whole concept of BigData and its history. It also describes techniques tightly related with this concept including evolution of how engineers look on CAP theorem which happens to be one of the biggest rules in modern distributed computing. In the next part thesis focus on opensource software from Apache BigData platform. It looks under the hood of NoSQL database Cassandra which is primary software for this thesis. Last part describes real use cases of Cassandra and related technologies in real world examples and description creation of certain use cases whose will be used in newly prepared course. }
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
@@ -116,36 +116,6 @@
 
 \chapter{Vhodné případy užití}
 \input{chapter6.tex}
-
-\section{Dotazování nad daty s dvojsměrnou vazbou}
-Další možností případu užití je ukládání informací o uskutečněných transkacích. Kdy po každé transakci ukládáme který uživatel si koupil jaký předmět. Tyto informace pro nás mají velkou informační hodnotu, protože nás může zajímat, kterí uživatelé si koupili konkrétní předmět, nebo také jaké předměty si koupil konkrétní uživatel. V malém elektronickém obchodě, který má pár desítek předmětů a pár set uživatelů takovéto informace můžeme ukládat klasickým způsobem do relační databáze, která takovýto obnos dat zvládne. V případě, že máme několik desítek tisíc uživatelů a v podstatě neomezený sortiment zboží a denně děláme několik stovek tisic transakcí, dostáváme se do objemu dat, na který relační databáze nestačí a musíme použít nějaký NoSQL nástroj. Tento příklad užití by měl poukázat na to, že přestože je zadání velice triviální a jednoduše řešitelné pomocí relačních databází, tak při určitém objemu dat, se problém stává velice komplikovaný a musí se řešit pomocí komplexnějších nástrojů
-
-\begin{lstlisting}[caption={Vytvoření tabulky s dvojsměrnou vazbou pomocí indexu},label=CQL10]
-CREATE TABLE itemstracking ( 
-item text,
-user text,
-timestamp timestamp,
-PRIMARY KEY (item)
-);
-
-CREATE INDEX userIndex ON itemstracking (user);
-\end{lstlisting}
-
-CQL neumí dotazování na sloupce mimo primární klíč, k tomu Cassandra využívá sekundární indexy. Po přídání indexu může CQL dotaz obsahovat filtrování podle sloupce \emph{item} nebo \emph{user}. Přestože se nyní můžeme dotazovat díky indexu i na položky uživatele v dokumentaci cassandry \cite{cassaindex} se dočteme, že používání indexů na sloupce s velkou kardinalitou není vhodné vzhledem k implementaci. Kdybychom měli velice omezený seznam uživatelů nebo předmětů, mohli bychom tabulku vymodelovat pomocí indexu, toto řešení však v našem případě není dostatečné. Dalším řešením je vytvořit si \uv{vlastní index} pomocí tabulky nebo si vytvořit další tabulku, kde budeme indexovat druhý parametr (tedy uživatele jako primární klíč) v našem případě (při daném počtu sloupců) se jedná o téměř totožná řešení. 
-
-\begin{lstlisting}[caption={Vytvoření indexovací tabulky},label=CQL11]
-CREATE TABLE userstrackingt ( 
-item text,
-user text,
-timestamp timestamp,
-PRIMARY KEY (user)
-);
-\end{lstlisting}
-
-Nyní sice duplikujeme o trochu více dat, než bychom duplikovali pomocí indexu (který indexuje data lokálně), ale nyní se můžeme jednoduše dotazovat na uživateli a předměty bez jakéhokoliv omezení na škálování a rozsah hodnot. 
-
-\section{Ukládání Solr indexu do Cassandry}
-Poslední demonstrovaný příklad ukáže použití vyhledávácího systému Solr, který byl popsán v  \ref{solr}. Tento systém indexuje data do lokálního souboru na disku. Fanoušci Cassandry společně s firmou Datastax vytvořili modifikaci, díky níž se index ukládá přímo do Cassandry (lokálně) a data samotná se ukládájí do Cassandry distribuovaně. Výhody tohoto řešení jsou zřejmé. Získáme distribuované vyhledávací řešení se všemi výhodami Cassandry. K datům můžeme přistupovat pomocí, SolR nebo CQL, což zanechává vysokou flexibilitu přístupu k datům. Využití SolR je kompromisem mezi rychlostí Cassandry a Analytickym schopnostem Hadoopu. Patrně největšími benefity je automatické duplikování dat a také automatické indexování dat vložených do Cassandry a také možnost zapisovat na kterýkoliv SolR uzel, címž se minimalizuje problém úzkého hrdla při zápisu do Solr indexu. Příklad poukáže na základní vyhledávací vlastnosti Solr a jeho výhody oproti CQL.
 
 
 \begin{conclusion}
