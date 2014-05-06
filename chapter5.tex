@@ -17,15 +17,15 @@ Když Facebook vydal článek popisující Cassandru \cite{facebookcassandra}, p
 
 \subsection{Co Cassandra zdědila od Dynama}
 \begin{itemize}
-\item \textbf{Symetrie} Každý uzel má stejnou zodpovědnost a roli v systému.
-\item \textbf{Decentralizace} Rozšíření symetrie. Každý uzel může plně komunikovat s jakýmkoliv jiným uzlem a získávat od něj informace. Je tedy možné ovládat systém skrze kterýkoliv uzel, což přispívá k výborným škálovacím vlastnostem. 
-\item \textbf{Heterogenita} Každý uzel může mít jiné vlastnosti (např. kapacitu disků) a přidání nového uzlu s jinými vlastnostmi by tím pádem nemělo systém nikterak ohrozit. 
+\item \textbf{Symetrie} – Každý uzel má stejnou zodpovědnost a roli v systému.
+\item \textbf{Decentralizace} – Rozšíření symetrie. Každý uzel může plně komunikovat s jakýmkoliv jiným uzlem a získávat od něj informace. Je tedy možné ovládat systém skrze kterýkoliv uzel, což přispívá k výborným škálovacím vlastnostem. 
+\item \textbf{Heterogenita} – Každý uzel může mít jiné vlastnosti (např. kapacitu disků) a přidání nového uzlu s jinými vlastnostmi by tím pádem nemělo systém nikterak ohrozit. 
 \end{itemize} 
 
 \subsection{Co Cassandra zdědila od BigTable}
 \begin{itemize}
-\item \textbf{Datový model} Stejně jako BigTable má Cassandra Wide-Column schéma reprezentované klíčem a hodnotou.
-\item \textbf{Distribuovaný log} K zápisu používá databáze interně distribuovaný \uv{append log}. 
+\item \textbf{Datový model} – Stejně jako BigTable má Cassandra Wide-Column schéma reprezentované klíčem a hodnotou.
+\item \textbf{Distribuovaný log} – K zápisu používá databáze interně distribuovaný \uv{append log}. 
 \end{itemize} 
 
 \section{Kdo Cassandru používá v produkci}
@@ -59,14 +59,14 @@ Cassandra je open source projekt, který je ovšem rozvíjen dvěma velkými spo
 Cassandra nabízí pro vývojáře mnoho lákadel. Nyní tu vypíši ty nejzajímavější, které si později rozebereme ve větším detailu. 
 
 \begin{itemize}
-\item \textbf{Replikace} Systém sám replikuje data podle kriterií, která mu zadáme.
-\item \textbf{Transparentní škálování} Programátor může napsat kód proti lokální instanci a aplikace bude fungovat v jakémkoliv clusteru.
-\item \textbf{Nastavitelná konzistence} Můžeme měnit nastavení konzistence přímo za běhu aplikace.
-\item \textbf{Nastavitelná síťová strategie} Správce může definovat strategii, podle které systém pozná, do jakého datacentra (případně racku) má uzel zařadit.
-\item \textbf{Cassandra Query Language (CQL)} Dotazovací jazyk velmi podobný SQL
-\item \textbf{MapReduce} Podpora Hadoop MapReduce
-\item \textbf{Databáze nemá \uv{Single Point of Failure}} Díky plně P2P architektuře není databáze náchylná na výpadek jakéhokoliv uzlu.
-\item \textbf{Rychlost} Čtení i zápis dosahuje skvělých výsledků \cite{benchmark} a to i při lineárním škálování. 
+\item \textbf{Replikace} – Systém sám replikuje data podle kriterií, která mu zadáme.
+\item \textbf{Transparentní škálování} – Programátor může napsat kód proti lokální instanci a aplikace bude fungovat v jakémkoliv clusteru.
+\item \textbf{Nastavitelná konzistence} – Můžeme měnit nastavení konzistence přímo za běhu aplikace.
+\item \textbf{Nastavitelná síťová strategie} – Správce může definovat strategii, podle které systém pozná, do jakého datacentra (případně racku) má uzel zařadit.
+\item \textbf{Cassandra Query Language (CQL)} – Dotazovací jazyk velmi podobný SQL
+\item \textbf{MapReduce} – Podpora Hadoop MapReduce
+\item \textbf{Databáze nemá \uv{Single Point of Failure}} – Díky plně P2P architektuře není databáze náchylná na výpadek jakéhokoliv uzlu.
+\item \textbf{Rychlost} – Čtení i zápis dosahuje skvělých výsledků \cite{benchmark} a to i při lineárním škálování. 
 \end{itemize} 
 
 \begin{figure}[h]
@@ -92,9 +92,9 @@ Pokud je uzel označený jako nefunkční, Cassandra na něj neposílá žádně
 Rozdělovače (anglicky \uv{partitioner}) určují, jakým způsobem budou data a jejích repliky rozloženy po clusteru. Jednoduše řečeno, jedná se o hashovací funkci, která vezme klíč, jež chceme ukládat a vrátí nám token, podle kterého určíme, na jaké uzly se má tato hodnota zapsat. Na výběr máme ze 3 možností:
 
 \begin{itemize}
-\item \textbf{Murmur3Partitioner} - jedná se o počáteční hodnotu, která rozmisťuje data rovnoměrně po clusteru na základě MurMur3 hashovací funkce.
-\item \textbf{RandomPartitioner} - rovnoměrně umisťuje data po clusteru na základě MD5 hashovací funkce (je pomalejší než MurMur3).
-\item \textbf{ByteOrderedPartitioner} -  Ukládá data po clusteru na základě lexikálního pořadí bytů. Nedoporučuje se kvůli složitému vyvažování a nerovnoměrné distribuci dat. Jedinou výhodou je sekvenční hledání podobných klíčů.
+\item \textbf{Murmur3Partitioner} – jedná se o počáteční hodnotu, která rozmisťuje data rovnoměrně po clusteru na základě MurMur3 hashovací funkce.
+\item \textbf{RandomPartitioner} – rovnoměrně umisťuje data po clusteru na základě MD5 hashovací funkce (je pomalejší než MurMur3).
+\item \textbf{ByteOrderedPartitioner} –  Ukládá data po clusteru na základě lexikálního pořadí bytů. Nedoporučuje se kvůli složitému vyvažování a nerovnoměrné distribuci dat. Jedinou výhodou je sekvenční hledání podobných klíčů.
 \end{itemize}
 
 \subsection{Distribuce a replikace dat}
@@ -124,8 +124,8 @@ Když má každý (virtuální) uzel přiřazenu svou množinu tokenů a máme u
 
 
 \begin{itemize}
-\item \textbf{Jednoduchá strategie} - Využívá se pouze pro clustery uložené v jednom datovém centru. Tato strategie uloží první repliku na uzel určený rozdělovačem a ostatní repliky jsou uloženy na následujících uzlech v kruhu po směru hodinových ručiček bez ohledu na topologii (pozice v racku či datacentru).
-\item \textbf{Síťová strategie} - Globální replikační faktor se zde změní na replikační faktor pro každé datacentrum. Každé datacentrum má vlastní kruh. Rozmisťování kopií tedy funguje následovně: První kopie se uloží na uzel vybraný rozdělovačem a další kopie ve stejném datacentru se uloží na nejbližší uzel po směru hodinových ručiček, který se nachází v jiném racku. 
+\item \textbf{Jednoduchá strategie} – Využívá se pouze pro clustery uložené v jednom datovém centru. Tato strategie uloží první repliku na uzel určený rozdělovačem a ostatní repliky jsou uloženy na následujících uzlech v kruhu po směru hodinových ručiček bez ohledu na topologii (pozice v racku či datacentru).
+\item \textbf{Síťová strategie} – Globální replikační faktor se zde změní na replikační faktor pro každé datacentrum. Každé datacentrum má vlastní kruh. Rozmisťování kopií tedy funguje následovně: První kopie se uloží na uzel vybraný rozdělovačem a další kopie ve stejném datacentru se uloží na nejbližší uzel po směru hodinových ručiček, který se nachází v jiném racku. 
 \end{itemize}
 
 \subsection{Donašeči (Snitches)}
@@ -227,13 +227,13 @@ V následujícím příkladu uvažujeme stejný cluster jako při zápisu a vyž
 Jak bylo naznačeno, při zápisu se může stát, že je uzel nedostupný a nedostane tedy data, která by měl zapsat a tím vznikají nekonzistence dat. Cassandra má 3 interní mechanismy jak si s nekonzistencí dat poradit: 
 
 \begin{itemize}
-\item \textbf{Read Repair} Pokud Cassandra při čtení zjistí, že má nějaký uzel nekonzistentní data, pošle po dokončení požadavku na pozadí aktualizační požadavek a data na těchto uzlech aktualizuje. Tato možnost je konfigurovatelná.
-\item \textbf{Anti Entropy Node Repair} Pokud byl uzel dlouho nedostupný, můžeme spustit opravný nástroj, který se sám dotáže na konzistenci dat ostatních uzlů a postupně je opraví. 
-\item \textbf{Hinted Handoff} Pokud se stane, že je některý z uzlů nedostupný během zápisu, ostatní uzly s replikami si uloží takzvaný hint ohledně zápisu a ve chvíli, kdy se pomocí Gossip protokolu dozví, že daný uzel se vrátil zpět do clusteru, pošlou mu informaci o zápisu. Pokud použijeme při zápisu úroveň konzistence ANY, můžeme zápis provézt úspěšně i pokud budou všechny uzly, kterým data patří, nedostupné. Data a hint se v takovém případě uloží na koordinátorském uzlu. Tato data ovšem nebudou dostupná ke čtení, dokud nebudou řádně zapsána alespoň do jednoho z uzlů kam patří.
+\item \textbf{Read Repair} – Pokud Cassandra při čtení zjistí, že má nějaký uzel nekonzistentní data, pošle po dokončení požadavku na pozadí aktualizační požadavek a data na těchto uzlech aktualizuje. Tato možnost je konfigurovatelná.
+\item \textbf{Anti Entropy Node Repair} – Pokud byl uzel dlouho nedostupný, můžeme spustit opravný nástroj, který se sám dotáže na konzistenci dat ostatních uzlů a postupně je opraví. 
+\item \textbf{Hinted Handoff} – Pokud se stane, že je některý z uzlů nedostupný během zápisu, ostatní uzly s replikami si uloží takzvaný hint ohledně zápisu a ve chvíli, kdy se pomocí Gossip protokolu dozví, že daný uzel se vrátil zpět do clusteru, pošlou mu informaci o zápisu. Pokud použijeme při zápisu úroveň konzistence ANY, můžeme zápis provézt úspěšně i pokud budou všechny uzly, kterým data patří, nedostupné. Data a hint se v takovém případě uloží na koordinátorském uzlu. Tato data ovšem nebudou dostupná ke čtení, dokud nebudou řádně zapsána alespoň do jednoho z uzlů kam patří.
 \end{itemize}
 
 \section{Oprava dat na disku}
-Přestože detailní struktura a ukládání dat na disku je nad rámec tohoto textu, je vhodné říci, že díky své struktuře zděděné od BigTable neprovádí Cassandra žádné inplace úpravy ani mazání. Místo toho používá náhrobky a nové zápisy s aktuálnějšími daty a časovým razítkem. Z toho plyne, že z hlediska zlepšení výkonu a ušetření místa na disku je potřeba čas od času provést pročištění a sjednocení těchto \uv{append-only} souborů. Této technice se říká kompakce a jedná se o pokročilejší administrátorskou úlohu při práci s Cassandrou, která se nachází mimo rámec tohoto textu. %inplace?
+Přestože detailní struktura a ukládání dat na disku je nad rámec tohoto textu, je vhodné říci, že díky své struktuře zděděné od BigTable neprovádí Cassandra žádné inplace úpravy ani mazání. Místo toho používá náhrobky a nové zápisy s aktuálnějšími daty a časovým razítkem. Z toho plyne, že z hlediska zlepšení výkonu a ušetření místa na disku je potřeba čas od času provést pročištění a sjednocení těchto \uv{append-only} souborů. Této technice se říká kompakce a jedná se o pokročilejší administrátorskou úlohu při práci s Cassandrou, která se nachází mimo rámec tohoto textu.
 
 \section{Datový model}
 Reprezentaci dat a ukládací engine si Cassandra vypůjčila a přizpůsobila od BigTable. Cassandra tedy spadá pod Key-Value storage systémy a WideColumn systémy. Těmto systémům se občas nadlehčeně říka\uv{Fancy hash table}, což můžeme přeložit jako \uv{Honosná HashTabulka}. Důvodem pro toto lehce posměšné označení je jednoduchý princip celého datového modelu, tedy že se jedná \uv{pouze} o ukládání klíče-hodnoty s pár funkcemi navíc. Vzhledem k vyspělosti těchto systémů v dnešní době a rozsáhlosti funkcí, můžeme toto dehonestující označení považovat za pouhý komunitní slovní žert.
@@ -244,8 +244,8 @@ Cassandra v dnešní době disponuje moderním rozhraním, které si popíšeme 
 Pro uživatele přicházející ze světa relačních databází byl velký problém se vypořádat s úplně jiným přístupem a neubránili se neustálému srovnávání přístupů a pojmů. Pro ovládnutí principů NoSQL (a především efektivního a funkčního návrhu modelů v Cassandře) je důležité myslet na 2 hlavní zásady: 
 
 \begin{itemize}
-\item \textbf{Denormalizace} Vše, co jste se učili v SQL systémech o normalizaci dat, zde neplatí. Naopak by takové postupy vedly k nefunkčnímu návrhu. Cassandra neumí JOIN příkazy, které při normalizaci obvykle potřebujete a především NoSQL návrh vyžaduje vzhledem ke své nátuře úplně jiný přístup. 
-\item \textbf{Redundance} Tento bod částečně souvisí s normalizací, která nám redundanci dat zakazuje a snaží se jí předejít. Při návrhu NoSQL systémů se držíme paradigmatu, které říká, že redundance dat nevadí, protože cena za mírné navýšení místa na disku je mnohem nižší, než cena za čas a HW potřebný ke spuštění takových dotazů, které by zvládly získat potřebná data bez redundance. Ukládat tedy některá data dvakrát za účelem jejich následného snadného čtení je doporučený postup. 
+\item \textbf{Denormalizace} – Vše, co jste se učili v SQL systémech o normalizaci dat, zde neplatí. Naopak by takové postupy vedly k nefunkčnímu návrhu. Cassandra neumí JOIN příkazy, které při normalizaci obvykle potřebujete a především NoSQL návrh vyžaduje vzhledem ke své nátuře úplně jiný přístup. 
+\item \textbf{Redundance} – Tento bod částečně souvisí s normalizací, která nám redundanci dat zakazuje a snaží se jí předejít. Při návrhu NoSQL systémů se držíme paradigmatu, které říká, že redundance dat nevadí, protože cena za mírné navýšení místa na disku je mnohem nižší, než cena za čas a HW potřebný ke spuštění takových dotazů, které by zvládly získat potřebná data bez redundance. Ukládat tedy některá data dvakrát za účelem jejich následného snadného čtení je doporučený postup. 
 \end{itemize}
 
 Tento přístup byl pro mnoho vývojářů tězce akceptovatelný a stal se jedním z důvodů, proč Cassandra používá CQL, o kterém si povíme později. I přes všechny její nadstavby je stále užitečné vědět, jak Cassandra funguje interně a navrhovat tak kvalitní datové modely. 
@@ -254,16 +254,16 @@ Tento přístup byl pro mnoho vývojářů tězce akceptovatelný a stal se jedn
 Přestože jsme se chtěli od relačního databázového světa oprostit, pro vysvětlení některých pojmů je nejjednodušší srovnání, a proto v několika následujících bodech přirovnání k relačním databázím využiji.
 
 \begin{itemize}
-\item \textbf{Keyspace} - Udržuje pohromadě všechny Column Family a replikační faktor, který se na CF přenáší. Každý Keyspace může mít jiný replikační faktor. Keyspace se dá chápat jako pojem \uv{databáze} z relačního světa. Také má nějaké vlastnosti a ty platí pro všechny Column Families (tabulky), které sdružuje.
-\item \textbf{Column Family} - Column Family sdružuje řádky, které obsahují sloupce. V relačním světě bychom mohli CF přirovnat k tabulce, která sdružuje jednotlivé záznamy. 
-\item \textbf{Row} - Row je řádka identifikována jednoznačným klíčem (primárním) a obsahuje jednotlivé sloupce s daty. Každá řádka může obsahovat sloupce s odlišnými daty, řádky tedy nemají pevnou strukturu. Řádky bychom mohli přirovnat k jednotlivým záznamům v tabulce relační databáze, ale s tím rozdílem, že řádky v Cassandře nemají pevný formát. 
-\item \textbf{Column} - Sloupec je nejmenší a tím pádem finální entitou udržující data v Cassandře. Sloupec má svůj název a hodnotu. Sloupce mají také časové razítko, které určuje čas vložení a dle něj se koordinátoři rozhodují, zda jsou sloupce z různých uzlů aktuální či nikoliv. Cassandra disponuje těmito druhy sloupců:
+\item \textbf{Keyspace} – Udržuje pohromadě všechny Column Family a replikační faktor, který se na CF přenáší. Každý Keyspace může mít jiný replikační faktor. Keyspace se dá chápat jako pojem \uv{databáze} z relačního světa. Také má nějaké vlastnosti a ty platí pro všechny Column Families (tabulky), které sdružuje.
+\item \textbf{Column Family} – Column Family sdružuje řádky, které obsahují sloupce. V relačním světě bychom mohli CF přirovnat k tabulce, která sdružuje jednotlivé záznamy. 
+\item \textbf{Row} – Row je řádka identifikována jednoznačným klíčem (primárním) a obsahuje jednotlivé sloupce s daty. Každá řádka může obsahovat sloupce s odlišnými daty, řádky tedy nemají pevnou strukturu. Řádky bychom mohli přirovnat k jednotlivým záznamům v tabulce relační databáze, ale s tím rozdílem, že řádky v Cassandře nemají pevný formát. 
+\item \textbf{Column} – Sloupec je nejmenší a tím pádem finální entitou udržující data v Cassandře. Sloupec má svůj název a hodnotu. Sloupce mají také časové razítko, které určuje čas vložení a dle něj se koordinátoři rozhodují, zda jsou sloupce z různých uzlů aktuální či nikoliv. Cassandra disponuje těmito druhy sloupců:
 
 \begin{itemize}
-\item \textbf{Standard} - Standardní obyčejný sloupec, který uchovává jednu hodnotu.
-\item \textbf{Composite} - Spojený sloupec se používá, pokud je primární klíč složený z více sloupců. Názvy sloupců v takovém případě obsahují svůj původní název rozšířený o druhou část primárního klíče. 
-\item \textbf{Expiring} - Sloupce s omezenou dobou platnosti se hodí, pokud chceme životnost dat omezit nějakou dopředu známou dobou, po kterou jsou data platná. Po vypršení této lhůty jsou data z databáze vymazána.
-\item \textbf{Counter} - Čítací sloupce můžeme využít, pokud chceme inkrementálně zvyšovat hodnotu v daném sloupci. Tato metoda se však příliš nepoužívá a raději se data předpočítávají průběžně. 
+\item \textbf{Standard} – Standardní obyčejný sloupec, který uchovává jednu hodnotu.
+\item \textbf{Composite} – Spojený sloupec se používá, pokud je primární klíč složený z více sloupců. Názvy sloupců v takovém případě obsahují svůj původní název rozšířený o druhou část primárního klíče. 
+\item \textbf{Expiring} – Sloupce s omezenou dobou platnosti se hodí, pokud chceme životnost dat omezit nějakou dopředu známou dobou, po kterou jsou data platná. Po vypršení této lhůty jsou data z databáze vymazána.
+\item \textbf{Counter} – Čítací sloupce můžeme využít, pokud chceme inkrementálně zvyšovat hodnotu v daném sloupci. Tato metoda se však příliš nepoužívá a raději se data předpočítávají průběžně. 
 \end{itemize}
 \end{itemize}
 

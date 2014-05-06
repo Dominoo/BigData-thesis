@@ -11,7 +11,7 @@ Pokud struktura dat nevyžaduje žádné složité operace a dotazy a vystačím
 Dříve než popíšeme, jakým způsobem je možné vytvářet dynamické tabulky, je potřeba vysvětlit, jak Cassandra zachází se skládáním primárních klíčů
 
 \subsubsection*{Složené klíče}
-V~Cassandře můžeme skládat klíče na 2 části (ty mohou být tvořeny jedním sloupcem nebo opět složenými sloupci). První část klíče se nazývá \uv{Partition Key} a určuje, z~čeho se bude skládat interní primární klíč, tedy ten, co se hashuje a následně distribuuje po clusteru. Druhá část klíče se nazývá \uv{Clustering Key}, který automaticky na daných sloupcích vytváří index a řadí data dle těchto sloupců. Interně slouží tyto sloupce jako prefix v~názvech ostatních sloupců a fragmentujeme podle nich data uvnitř jedné řádky. 
+V~Cassandře můžeme skládat klíče ze 2 části (ty mohou být tvořeny jedním sloupcem nebo opět složenými sloupci). První část klíče se nazývá \uv{Partition Key} a určuje, z~čeho se bude skládat interní primární klíč, tedy ten, co se hashuje a následně distribuuje po clusteru. Druhá část klíče se nazývá \uv{Clustering Key}, který automaticky na daných sloupcích vytváří index a řadí data dle těchto sloupců. Interně slouží tyto sloupce jako prefix v~názvech ostatních sloupců a fragmentujeme podle nich data uvnitř jedné řádky. 
 
 \begin{lstlisting}[caption={Ukázka složených klíčů},label=CQL2]
 CREATE TABLE Cats (
@@ -27,7 +27,7 @@ Příklad \ref{CQL2} ukazuje, že Partition Key je složený ze sloupců \emph{b
 
 
 \subsubsection*{Časosběrné události 1}
-Ideálním příkladem na ilustraci toho, jak se používají složené klíče (respektive implementace dynamických tabulek), tedy využití vlastnosti Cassandry, že v~Column family nemusí mít pevný formát sloupců, jsou časosběrné události. Ukládáme různé hodnoty v~čase na různých místech nebo pro různé uživatele. Ukázkový příklad sbírá data na meteorologických stanicích a ukládá aktuální teplotu pro daný čas.
+Ideálním příkladem na ilustraci toho, jak se používají složené klíče (respektive implementace dynamických tabulek), tedy využití vlastnosti Cassandry, že v~Column Family nemusí mít pevný formát sloupců, jsou časosběrné události. Ukládáme různé hodnoty v~čase na různých místech nebo pro různé uživatele. Ukázkový příklad sbírá data na meteorologických stanicích a ukládá aktuální teplotu pro daný čas.
 
 \begin{lstlisting}[caption={Dynamická tabulka 1},label=CQL3]
 CREATE TABLE temperature (
@@ -75,7 +75,7 @@ Tabulku jsme upravili tak, že jsme přidali sloupec \emph{datum}, který zárov
 Jak je vidět z~předchozího příkladu, návrh a struktura dat se musí opravdu dobře rozmyslet předem, případné chyby v~návrhu (např. opomenutí limitů) se poté řeší velice nepříjemně. Komplikovanější návrh nezabere implementačně moc času navíc a bude fungovat pořád.
 
 
-\subsection{Mixování Statických a dynamických tabulek}
+\subsection{Mixování statických a dynamických tabulek}
 Cassandra nativně umožňuje i mixování předchozích vzorů. Například máme dynamický prvek \emph{tag}, který přiřazujeme k~uživateli, jehož ostatní sloupce jako jméno, adresa atd. jsou obyčejná statická tabulka. Cassandra takovýto návrh řeší nativně pomocí kolekcí. Kolekce jsou datový typ v~CQL, který umožňuje mít v~jednom sloupci více hodnot a pracovat s~nimi. Cassandra nabízí následující typy kolekcí:
 
 \begin{itemize}
@@ -133,7 +133,7 @@ Zajímavostí na implementaci Finn.no je, že většina firem používá více m
 
 V~této sekci bych se na závěr kapitoly chtěl zaměřit na případy užití, se kterými jsem přišel do styku v~reálném prostředí nebo je teoreticky navrhoval pro nerealizované či věděcké projekty. 
 
-\section{Analýza Access logů}
+\section{Analýza access logů}
 První z~těchto zajímavých případů užití se týká analýzy access logů. Dostal jsem za úkol navrhnout řešení, které by umožnilo velké nadnárodní společnosti s~pobočkami po celém světě a více než 20 000 zaměstnanci monitorovat, jaké weby její zaměstnanci navštěvují v~pracovní době. Na základě těchto dat poté tvořit grafy a reporty pro konkrétní uživatele nebo oddělení. Součástí analýzy řešení byl i prototyp vybraného řešení. Seznam požadavků byl následující: 
 
 \begin{itemize}
@@ -213,10 +213,10 @@ V~obou předchozích scénářích předpokládáme, že uzel B se stane nedostu
 V~předchozí kapitole jsem popsal několik různých druhů užití Cassandry v~reálných podmínkách. Vzhledem k~zadání této práce jsem (po konzultaci s~jejím vedoucím) vybral několik jednoduchých a rozdílných případů, které budou sloužit jako podklady pro přípravu cvičení a laboratoří nově připravovaného předmětu na ČVUT.
 
 \section{Testovací prostředí}
-Součástí zadání bylo vypracovat tyto případy užití na školní infrastruktuře. Vzhledem ke komplikované instalaci a správě veškerého potřebného softwaru, bylo z~hlediska efektivity práce od této myšlenky upuštěno. Fakulta vlastní experimentální výpočetní cluster a Tomáš Bartoň, kterému bych tímto chtěl poděkovat, mi nabídl řešení, které se zprvu zdálo dostačující, ale vzhledem ke komplikacím jsme i od tohoto řešení museli upustit. Finální implementace tedy proběhla na clusteru vytvořeném z~virtuálních strojů na jednom fyzickém počítači pomoci XENu. Pro Ing. Gattermayera, který předmět připravuje, jsem připravil XEN obraz, díky kterému lze vytvořit nový uzel a spustit na něm Cassandru. Toto řešení se ukázalo i pro garanta předmětu jako nejvhodnější a nejjednodušší. 
+Součástí zadání bylo vypracovat tyto případy užití na školní infrastruktuře. Vzhledem ke komplikované instalaci a správě veškerého potřebného softwaru bylo z~hlediska efektivity práce od této myšlenky upuštěno. Fakulta vlastní experimentální výpočetní cluster a Tomáš Bartoň, kterému bych tímto chtěl poděkovat, mi nabídl řešení, které se zprvu zdálo dostačující, ale vzhledem ke komplikacím jsme i od tohoto řešení museli upustit. Finální implementace tedy proběhla na clusteru vytvořeném z~virtuálních strojů na jednom fyzickém počítači pomoci XENu. Pro Ing. Gattermayera, který předmět připravuje, jsem připravil XEN obraz, díky kterému lze vytvořit nový uzel a spustit na něm Cassandru. Toto řešení se ukázalo i pro garanta předmětu jako nejvhodnější a nejjednodušší. 
 
-\section{Implementace Access Log analyzéru}
-Jak bylo zmíněno v~předchozí kapitole, dostal jsem za úkol vypracovat analýzu a prototyp řešení pro nadnárodní německou firmu zaměstnávající více než 20 000 lidí po celém světě. Tito lidé se z~firemní infrastruktury připojují do internetu a tato firma chce monitorovat návštěvnost stránek jednotlivých uživatelů a oddělení pro různá časová období, která však nejsou delší než 6 měsíců a na základě různých kriterií generovat online reporty. Tento zdánlivě jednoduchý problém v~sobě ve skutečnosti skrývá několik netriviálních úkolů. Především je to množství dat, které je potřeba zpracovat. Pokud bychom zpracovávali data sekvenčně, tak bychom museli procházet přibližně 1860 GB systémových logů, což bychom rozhodně v~žádné relační databázi nemohli provést v~rozumném čase. Data dostáváme inkrementálně každý den (vždy za předchozí den) a to v~několika dávkách z~různých serverů po celém světě. 
+\section{Implementace access log analyzéru}
+Jak bylo zmíněno v~předchozí kapitole, dostal jsem za úkol vypracovat analýzu a prototyp řešení pro nadnárodní německou firmu zaměstnávající více než 20 000 lidí po celém světě. Tito lidé se z~firemní infrastruktury připojují do internetu a firma chce monitorovat návštěvnost stránek jednotlivých uživatelů a oddělení pro různá časová období, která však nejsou delší než 6 měsíců a na základě různých kriterií generovat online reporty. Tento zdánlivě jednoduchý problém v~sobě ve skutečnosti skrývá několik netriviálních úkolů. Především je to množství dat, které je potřeba zpracovat. Pokud bychom zpracovávali data sekvenčně, tak bychom museli procházet přibližně 1860 GB systémových logů, což bychom rozhodně v~žádné relační databázi nemohli provést v~rozumném čase. Data dostáváme inkrementálně každý den (vždy za předchozí den) a to v~několika dávkách z~různých serverů po celém světě. 
 
 
 \subsection{Návrh řešení pro ukládání všech logů}
@@ -274,7 +274,7 @@ Po partition klíči následují další části primárního klíče, jako je d
 Mapovací funkce je v~tomto případě velice jednoduchá. Musíme vytvořit univerzální schéma klíče, abychom mohli sečíst návštěvy v~daný den. Proto potřebujeme datum \uv{normalizovat}. V~případě data nám stačí jej oříznout pouze na rok, měsíc a den. Čas požadavku nás nezajímá. Z~informací \emph{normalizované datum}, \emph{adresa}, \emph{uživatel} a \emph{úroveň závažnosti} vytvoříme klíč, ke kterému přiřadíme hodnotu 1, protože se jedná o~jednu návštěvu dané webové stránky v~jeden den konkrétním uživatelem. 
 
 \subsubsection{Redukční funkce}
-Redukční  Pro každý klíč provedeme sumu hodnot, tedy počtu navštívení a výsledek zapíšeme do výše uvedené tabulky s~výše popsaným primárním klíčem, který se rovná stejnému klíči, který jsme vytvořili v~mapperu. 
+Redukcí pro každý klíč provedeme sumu hodnot, tedy počtu navštívení a výsledek zapíšeme do výše uvedené tabulky s~výše popsaným primárním klíčem, který se rovná stejnému klíči, který jsme vytvořili v~mapperu. 
 
 \subsection{MapReduce 2}
 V~předchozím případě jsme viděli, jak napsat MapReduce job pomocí vlastního algoritmu, tedy nadefinování mapovací a redukční funkce. V~tomto případě to bylo relativně jednoduché a moc práce nám to nedalo. Přesto je potřeba napsat několik tříd a vše správně zkompilovat a poté spustit. V~druhém způsobu popíši, jak používat dotazovací jazyk Hive, který dotazy sám přeloží do MapReduce kódu, který spustí a vrátí výsledek. Tabulku na ukládání výsledků MapReduce jobů ponecháme stejnou jako v~prvním případě, výsledek je totiž stejný. V~jazyce Hive nám k~předchozímu výsledku stačí pouze takovýto dotaz:
@@ -355,12 +355,12 @@ CREATE TABLE images (
 );
 \end{lstlisting}
 
-Primárním klíčem je identifikátor včetně velikosti obrázku. Data se tedy budou rozdělovat podle tohoto identifikátoru (první část primárního klíče). Sloupec \emph{data} bude obsahovat serializovaný obrázek a sloupec metadata může obsahovat specifická metadata k~tomuto obrázku. Pokud bychom chtěli pro všechny obrázky se stejným id udržovat jedna metadata, bylo by lepší pro metadata založit samostatnou tabulku. V~případě, že každá velikost obrázku může mít jiná metadata, je tento návrh v~pořádku. 
+Primárním klíčem je identifikátor včetně velikosti obrázku. Data se tedy budou rozdělovat podle tohoto identifikátoru (první část primárního klíče). Sloupec \emph{data} bude obsahovat serializovaný obrázek a sloupec \emph{metadata} může obsahovat specifická metadata k~tomuto obrázku. Pokud bychom chtěli pro všechny obrázky se stejným id udržovat jedna metadata, bylo by lepší pro metadata založit samostatnou tabulku. V~případě, že každá velikost obrázku může mít jiná metadata, je tento návrh v~pořádku. 
 
 V~aplikaci se poté jen dotážeme na obrázek v~dané velikosti a vyhodnotíme výsledky způsobem popsaným výše. 
 
 \section{Hledání korelací mezi daty}
-V~maloobchodě můžeme porovnávat například spojitost mezi prodejem dvou různých produktů nebo vliv počasí na prodeje. Jedná se o~časosběrnou událost, kdy za každý den ukládáme zisk za daný předmět (nebo počet prodaných kusů). Tyto data můžeme získávat pomocí MapReduce z~nějakého datasetu všech denních transakcí (například z~ERP). Tabulku si vymodelujeme například takto: 
+V~maloobchodě můžeme porovnávat například spojitost mezi prodejem dvou různých produktů nebo vliv počasí na prodeje. Jedná se o~časosběrnou událost, kdy za každý den ukládáme zisk za daný předmět (nebo počet prodaných kusů). Tato data můžeme získávat pomocí MapReduce z~nějakého datasetu všech denních transakcí (například z~ERP). Tabulku si vymodelujeme například takto: 
 
 \begin{lstlisting}[caption={Tabulka zisků z~prodeje předmětů v~daný den},label=corr1]
 CREATE TABLE sales ( 
